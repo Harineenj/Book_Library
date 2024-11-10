@@ -5,6 +5,7 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [bookCount, setBookCount] = useState(0); // New state for book count
     const navigate = useNavigate();
 
     const fetchProfile = useCallback(async () => {
@@ -29,10 +30,29 @@ const Profile = () => {
             setLoading(false);
         }
     }, [navigate]);
+    // New function to fetch book count
+    const fetchBookCount = useCallback(async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/books/count', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setBookCount(data.count); // Set book count
+            } else {
+                setError('Failed to fetch book count');
+            }
+        } catch (error) {
+            setError('Error fetching book count: ' + error.message);
+        }
+    }, []);
 
     useEffect(() => {
         fetchProfile();
-    }, [fetchProfile]);
+        fetchBookCount(); // Fetch book count when component mounts
+    }, [fetchProfile, fetchBookCount]);
+
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -74,8 +94,7 @@ const Profile = () => {
                 />
                 <h2 className="text-3xl font-semibold text-gray-800">{user.username}</h2>
                 <p className="text-gray-600 mt-2">{user.email}</p>
-                <p className="text-gray-600 mt-2">Books Read: {user.booksRead || 0}</p>
-                <p className="text-gray-600 mt-2">Total Books: {user.totalBooks || 0}</p>
+                <p className="text-gray-600 mt-2">Total Books in the Collection: {bookCount}</p>
                 <button
                     className="mt-6 px-6 py-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-500 transition duration-300"
                     onClick={handleLogout}

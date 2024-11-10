@@ -10,7 +10,8 @@ const router = express.Router();
 
 // Route to save a book for a user
 router.post('/', protect, asyncHandler(async (req, res) => {
-    const { title, author, description, cover } = req.body;
+    const { title, author, description, cover, year, genre,openlibrarybookid} = req.body;
+    console.log(title, author, description, cover, year, genre,openlibrarybookid);
 
     // Check that all required fields are provided
     if (!title || !author || !description || !cover) {
@@ -25,11 +26,14 @@ router.post('/', protect, asyncHandler(async (req, res) => {
 
         // Create and save a new book
         const newBook = new Book({
+            openlibrarybookid,
             title,
             author,
             description,
             cover,
-            userId: user._id
+            userId: user._id,
+            year,
+            genre
         });
         await newBook.save();
 
@@ -130,5 +134,38 @@ router.post('/:openLibraryBookId/comment', async (req, res) => {
 });
 
 
+// Route to get the count of all saved books for a user
+router.get('/count', protect, asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const bookCount = await Book.countDocuments({ userId });
+        res.status(200).json({ count: bookCount });
+    } catch (error) {
+        console.error('Error fetching book count:', error);
+        res.status(500).json({ message: 'Error fetching book count', error });
+    }
+}));
+
+router.get('/user-activity/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+  
+      // Get books added by the user
+      const booksAdded = await Book.countDocuments({ userId });
+  
+      // Get comments posted by the user
+      const user = await User.findById(userId);
+      const commentsPosted = await Comment.countDocuments({ username: user.username });
+  
+      res.json({
+        booksAdded,
+        commentsPosted
+      });
+    } catch (error) {
+      console.error('Error fetching user activity data:', error);
+      res.status(500).json({ error: 'Failed to retrieve user activity data' });
+    }
+  });
+  
 
 module.exports = router;

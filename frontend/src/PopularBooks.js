@@ -40,21 +40,22 @@ const PopularBooks = () => {
   }, [searchTerm, popularBooks]);
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Popular Books</h2>
+    <div className="mt-9 w-full px-20">
+      <h2 className="text-2xl font-bold mb-6 mt-11 ">Popular Books</h2>
       {error && <p className="text-red-500">{error}</p>}
       
       {/* Search Bar */}
       <div className="flex items-center justify-center w-full mb-4">
-        <div className="relative w-1/2">
+        <div className="relative w-1/2 pt-10">
           <input
             type="text"
             placeholder="Search for a book..."
+             className="w-full p-3 pl-12 pr-4 rounded-lg bg-white-100 text-gray-800 shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 transition hover:translate-y-[-4px]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 pl-10 rounded-lg border-none"
+           
           />
-          <FaSearch className="absolute left-3 top-3 text-gray-500" />
+          <FaSearch className="absolute left-3 top-14 text-gray-500" />
         </div>
       </div>
 
@@ -63,10 +64,10 @@ const PopularBooks = () => {
         <p className="text-gray-500">Loading books...</p>
       ) : (
         // Display Popular Books
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {filteredBooks.length > 0 ? (
             filteredBooks.map((book) => (
-              <li key={book.key} className="bg-white p-4 shadow-lg rounded-lg">
+              <li key={book.key}  className="bg-white p-4 shadow-lg rounded-lg cursor-pointer hover:shadow-2xl hover:translate-y-[-4px] transition-transform duration-200">
                 <h3 className="font-bold text-lg mb-2">{book.title}</h3>
                 <p className="text-sm text-gray-600 mb-2">{book.author_name ? book.author_name.join(', ') : 'Unknown Author'}</p>
                 <img

@@ -35,14 +35,14 @@ const BooksRead = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h2 className="text-2xl font-bold mb-4">Books Read by Users</h2>
+    <div className="min-h-screen bg-gray-100 p-6 mr-10 ml-10 mt-16 bg-gradient-to-r from-yellow-200 via-orange-200 to-yellow-100">
+      <h2 className="text-2xl font-bold mb-4 justify-center">Books Read by Users</h2>
       {loading && <p>Loading...</p>} {/* Display loading indicator */}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && booksRead.length > 0 ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {booksRead.map((book) => (
-            <li key={book._id} className="bg-white p-4 shadow-lg rounded-lg">
+            <li key={book._id} className="bg-white p-4 shadow-lg rounded-lg transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gray-50">
               <h3 className="font-bold text-lg mb-2">{book._id}</h3>
               <p className="text-sm text-gray-600 mb-2">
                 {book.author ? book.author : 'Unknown Author'}

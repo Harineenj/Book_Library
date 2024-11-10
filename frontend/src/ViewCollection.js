@@ -53,22 +53,25 @@ const ViewCollection = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen flex flex-col items-center font-inter px-4">
-      <h1 className="text-4xl font-bold mb-8 text-gray-800">My Book Collection</h1>
-      <ul className="w-full max-w-6xl flex flex-wrap justify-center gap-6">
+    <div className="min-h-screen flex flex-col items-center font-inter px-2"> {/* Reduced the side space here */}
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">My Book Collection</h1> {/* Added Heading */}
+      <h2 className="text-2xl font-semibold mb-6 text-gray-700">Explore your collection of books</h2> {/* Added Subheading */}
+      
+      {/* Grid Layout for Books */}
+      <ul className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {books.map((book) => (
-          <li key={book._id} className="border p-6 rounded-lg shadow-md w-1/4 max-w-xs flex flex-col items-center bg-white">
-            <h2 className="text-xl font-semibold text-center text-gray-800 mb-2">{book.title}</h2>
+          <li key={book._id} className="border p-6 rounded-lg shadow-xl w-full max-w-xs flex flex-col items-center bg-white transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gray-50">
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">{book.title}</h2>
             <p className="text-gray-600 text-sm mb-4">Author: {book.author}</p>
             <img
               src={book.cover || '/no-image.jpg'}
               alt={book.title}
-              className="w-32 h-48 object-cover mb-4 rounded-lg shadow-sm"
+              className="w-full h-48 object-cover mb-4 rounded-lg shadow-md"
             />
             <p className="text-sm text-center text-gray-700 mb-4">{book.description}</p>
             <button
               onClick={() => handleReadMore(book.title, book.author)}
-              className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 transition"
+              className="px-6 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition"
             >
               Read More
             </button>
